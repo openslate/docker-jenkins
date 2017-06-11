@@ -18,6 +18,12 @@ ENV JENKINS_SLAVE_AGENT_PORT ${agent_port}
 RUN groupadd -g ${gid} ${group} \
     && useradd -d "$JENKINS_HOME" -u ${uid} -g ${gid} -m -s /bin/bash ${user}
 
+# allow jenkins user to access docker socket
+# staff for it to work with Docker for Mac,
+# add a docker group for it to work on debian
+RUN groupadd -g 999 docker
+RUN usermod -a -G docker,staff jenkins
+
 # Jenkins home directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades
 VOLUME /var/jenkins_home
