@@ -13,6 +13,19 @@ services:
       - "8080:8080"
     volumes:
       - docker_jenkins_home:/var/jenkins_home
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 2000M
+        reservations:
+          cpus: '1.0'
+          memory: 1500M
+      restart_policy:
+        condition: any
+        delay: 5s
+        window: 120s
 
 
 networks:
