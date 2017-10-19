@@ -11,7 +11,7 @@ tasks:
     command: dc --profile stack -e jenkins --deploy
 
   local-build:
-    command: dc -e dev-ad-api -p dev build app
+    command: dc --profile stack -e jenkins build app
 
   publish:
     command: dc --profile stack -e jenkins --tag-version --tag-docker-image --write-tag --push build
