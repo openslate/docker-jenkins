@@ -1,0 +1,17 @@
+overlay:
+  dev:
+    - docker-compose.yml
+
+  stack:
+    - docker-compose-stack.yml
+
+
+tasks:
+  deploy:
+    command: dc --profile stack -e jenkins --deploy
+
+  local-build:
+    command: dc --profile stack -e jenkins build app
+
+  publish:
+    command: dc --profile stack -e jenkins --tag-version --tag-docker-image --write-tag --push build
