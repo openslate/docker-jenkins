@@ -20,6 +20,9 @@ RUN echo 'deb http://ftp.de.debian.org/debian testing main' >> /etc/apt/sources.
   && apt-get -q -y -t testing install python3.6 \
   &&  python3.6 /var/cache/get-pip.py
 
+# now install dc-workflows to get dc
+RUN pip3 install dc-workflows
+
 ARG user=jenkins
 ARG group=jenkins
 ARG uid=1000
