@@ -8,6 +8,18 @@ RUN apt-get update \
   && pip install docker-compose \
   && rm -rf /var/lib/apt/lists/*
 
+# copy over local files, which includes get-pip.py
+COPY files/ /
+
+# install python3
+# this will add the testing DEBIAN version to apt as well
+# as set the default release to install from stable.
+RUN echo 'deb http://ftp.de.debian.org/debian testing main' >> /etc/apt/sources.list.d/debian_testing.list \
+  && echo 'APT::Default-Release "Stable";' | tee -a /etc/apt/apt.conf.d/00local \
+  && apt-get -q update \
+  && apt-get -q -y -t testing install python3.6 \
+  &&  python3.6 /var/cache/get-pip.py
+
 ARG user=jenkins
 ARG group=jenkins
 ARG uid=1000
