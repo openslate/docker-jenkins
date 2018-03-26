@@ -7,11 +7,14 @@ overlay:
 
 
 tasks:
+  stack:
+    command: dc --profile stack --environment jenkins
+
   deploy:
-    command: dc --profile stack -e jenkins --deploy
+    command: dc task stack --deploy
 
   local-build:
-    command: dc --profile stack -e jenkins build app
+    command: dc task stack build app
 
   publish:
-    command: dc --profile stack -e jenkins --tag-version --tag-docker-image --write-tag --push build
+    command: dc task stack --tag-version --tag-docker-image --write-tag --push build
