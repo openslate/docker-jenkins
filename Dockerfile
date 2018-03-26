@@ -20,8 +20,14 @@ RUN echo 'deb http://ftp.de.debian.org/debian testing main' >> /etc/apt/sources.
   && apt-get -q -y -t testing install python3.6 \
   &&  python3.6 /var/cache/get-pip.py
 
+COPY Pipfile /usr/local/src/jenkins/
+COPY Pipfile.lock /usr/local/src/jenkins/
+
 # now install dc-workflows to get dc
-RUN pip3 install dc-workflows
+RUN pip3 install pipenv && \
+  cd /usr/local/src/jenkins && \
+  pipenv install --system && \
+  rm -rf /root/.cache/pip
 
 ARG user=jenkins
 ARG group=jenkins
