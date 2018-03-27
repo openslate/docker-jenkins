@@ -38,9 +38,9 @@
         },
         "dc-workflows": {
             "hashes": [
-                "sha256:55dcda99b895645c55f1f0db5f618fc869cff309d5bde404ba1713afe69c535c"
+                "sha256:8eb38b416e703b17563e0932f56430a87f827f331ac59d9d6139bc35187eed72"
             ],
-            "version": "==0.2.1"
+            "version": "==0.2.2"
         },
         "pyyaml": {
             "hashes": [
