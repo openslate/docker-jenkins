@@ -34,6 +34,35 @@ services:
         delay: 5s
         window: 120s
 
+  nonpriv_proxy:
+    image: registry.osslabs.net/nonpriv-proxy:a7e7ce1-master
+    restart: always
+    labels:
+      com.openslate.service_ip: ${SERVICE_IP}/24
+    networks:
+      - hostnet
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_SECRET_ACCESS_KEY
+      - SERVICE_IP
+    volumes:
+      - /var/run/instance_id:/var/run/instance_id:ro
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+      replicas: 1
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+      restart_policy:
+        condition: any
+        delay: 5s
+        window: 120s
+
 
 networks:
   servicenet:
@@ -42,6 +71,10 @@ networks:
       driver: default
       config:
         - subnet: ${DOCKER_SUBNET}
+
+  hostnet:
+    external:
+      name: host
 
 
 volumes:
