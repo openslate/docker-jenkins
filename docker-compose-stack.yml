@@ -35,19 +35,18 @@ services:
         window: 120s
 
   nonpriv_proxy:
-    image: registry.osslabs.net/nonpriv-proxy:a7e7ce1-master
+    image: registry.osslabs.net/nonpriv-proxy:7da6f46-master
     restart: always
     labels:
       com.openslate.service_ip: ${SERVICE_IP}/24
     networks:
       - hostnet
     environment:
-      - AWS_ACCESS_KEY_ID
-      - AWS_DEFAULT_REGION=us-east-1
-      - AWS_SECRET_ACCESS_KEY
       - SERVICE_IP
-    volumes:
-      - /var/run/instance_id:/var/run/instance_id:ro
+      - SERVICE_PORT
+      - VAULT_ADDR
+      - VAULT_CERTIFICATE_PATH=/v1/secret/ssl/star.osslabs.net
+      - VAULT_TOKEN
     deploy:
       placement:
         constraints:
