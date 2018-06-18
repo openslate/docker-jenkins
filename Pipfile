@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+docker-compose = "*"
 
 [dev-packages]
 compose-flow = "*"
