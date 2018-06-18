@@ -1,5 +1,9 @@
 services:
   app:
+    volumes:
+      - /usr/bin/docker:/usr/bin/docker:ro
+      - /usr/lib/x86_64-linux-gnu/libltdl.so.7:/usr/lib/x86_64-linux-gnu/libltdl.so.7:ro
+      - /usr/lib/x86_64-linux-gnu/libltdl.so.7.3.1:/usr/lib/x86_64-linux-gnu/libltdl.so.7.3.1:ro
     networks:
       - servicenet
     deploy:
