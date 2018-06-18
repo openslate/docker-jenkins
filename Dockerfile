@@ -1,24 +1,13 @@
-FROM openjdk:8-jdk
+FROM python:3.6-stretch
 
 RUN apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update \
-  && apt-get install -y python-setuptools \
-  && easy_install pip \
-  && pip install docker-compose \
+  && apt-get install -y openjdk-8-jdk \
   && rm -rf /var/lib/apt/lists/*
 
 # copy over local files, which includes get-pip.py
 COPY files/ /
-
-# install python3
-# this will add the testing DEBIAN version to apt as well
-# as set the default release to install from stable.
-RUN echo 'deb http://ftp.de.debian.org/debian testing main' >> /etc/apt/sources.list.d/debian_testing.list \
-  && echo 'APT::Default-Release "Stable";' | tee -a /etc/apt/apt.conf.d/00local \
-  && apt-get -q update \
-  && apt-get -q -y -t testing install python3.6 \
-  &&  python3.6 /var/cache/get-pip.py
 
 COPY Pipfile /usr/local/src/jenkins/
 COPY Pipfile.lock /usr/local/src/jenkins/
