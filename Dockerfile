@@ -15,7 +15,7 @@ COPY Pipfile.lock /usr/local/src/jenkins/
 # now install dc-workflows to get dc
 RUN pip3 install pipenv && \
   cd /usr/local/src/jenkins && \
-  pipenv install --system && \
+  pipenv install --system --deploy --dev && \
   rm -rf /root/.cache/pip
 
 ARG user=jenkins
