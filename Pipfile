@@ -4,9 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-"dc-workflows" = "*"
 
 [dev-packages]
+compose-flow = "*"
 
 [requires]
 python_version = "3.6"

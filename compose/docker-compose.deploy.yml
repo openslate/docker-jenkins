@@ -1,23 +1,7 @@
-version: '3.3'
 services:
   app:
-    build: .
-    image: ${DOCKER_IMAGE}
-    restart: always
     networks:
       - servicenet
-    environment:
-      JAVA_OPTS: "-Djava.awt.headless=true"
-    ports:
-      - "50000:50000"
-      - "8080:8080"
-    volumes:
-      - docker_jenkins_home:/var/jenkins_home
-      - /usr/bin/docker:/usr/bin/docker:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/lib/x86_64-linux-gnu/libltdl.so.7:/usr/lib/x86_64-linux-gnu/libltdl.so.7:ro
-      - /usr/lib/x86_64-linux-gnu/libltdl.so.7.3.1:/usr/lib/x86_64-linux-gnu/libltdl.so.7.3.1:ro
-      - /tmp/jenkins:/tmp/jenkins
     deploy:
       placement:
         constraints:
@@ -35,8 +19,8 @@ services:
         delay: 5s
         window: 120s
 
-  nonpriv_proxy:
-    image: registry.osslabs.net/nonpriv-proxy:7da6f46-master
+  service_proxy:
+    image: registry.osslabs.net/service-proxy:0.1.1
     restart: always
     labels:
       com.openslate.service_ip: ${SERVICE_IP}/24
