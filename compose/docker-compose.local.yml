@@ -1,4 +1,10 @@
 version: '3.4'
+services:
+  app:
+    volumes:
+      - /usr/local/bin/docker:/usr/bin/docker:ro
+
+
 volumes:
   docker_jenkins_home:
     driver: local
