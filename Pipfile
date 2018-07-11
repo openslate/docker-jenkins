@@ -4,11 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+compose-flow = "*"
 docker-compose = "*"
 dc-workflows = "*"
 
 [dev-packages]
-compose-flow = "*"
 
 [requires]
 python_version = "3.6"
