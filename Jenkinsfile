@@ -1,12 +1,5 @@
 @Library('OpenSlateProd')_  // https://github.com/openslate/jenkins-shared-library
 
-def cfDeploy(String environ) {
-    withDockerRegistry([url: 'https://registry.osslabs.net', credentialsId: 'docker-oss']) {
-        sh "compose-flow -e {environ} --config-name ${environ}-${env.REPO_NAME} --project-name ${env.REPO_NAME} publish"
-        sh "compose-flow -e {environ} --config-name ${environ}-${env.REPO_NAME} --project-name ${env.REPO_NAME} deploy"
-    }
-}
-
 pipeline {
     agent any
     environment {
@@ -21,8 +14,12 @@ pipeline {
             when {
                 branch 'master'
             }
+            environment {
+                DEPLOY_ENV = 'prod'
+            }
             steps {
-                cfDeploy 'prod'
+                cfPublish()
+                cfDeploy()
             }
             post {
                 success {
