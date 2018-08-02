@@ -14,10 +14,12 @@ pipeline {
             when {
                 branch 'master'
             }
+            environment {
+                DEPLOY_ENV = 'prod'
+            }
             steps {
-                withDockerRegistry([url: 'https://registry.osslabs.net', credentialsId: 'docker-oss']) {
-                    cf 'prod', '--project-name $REPO_NAME deploy'
-                }
+                cfPublish()
+                cfDeploy()
             }
             post {
                 success {
