@@ -1,10 +1,11 @@
 @Library('OpenSlateProd')_  // https://github.com/openslate/jenkins-shared-library
 
-deployWhen = { env.GIT_BRANCH == 'master' }
+def deployWhen = { env.GIT_BRANCH == 'master' }
 
+def lastAuthor
 node {
     checkout scm
-    def lastAuthor = getLastAuthor()
+    lastAuthor = getLastAuthor()
 }
 
 openslatePipeline {
