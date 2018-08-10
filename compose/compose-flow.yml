@@ -3,6 +3,10 @@ profiles:
     - docker-compose.yml
     - local
 
+  test:
+    - docker-compose.yml
+    - test
+
   prod:
     - docker-compose.yml
     - deploy

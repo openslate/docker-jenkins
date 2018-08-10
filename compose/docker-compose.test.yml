@@ -1,0 +1,8 @@
+services:
+  app:
+    volumes:
+      - /usr/bin/docker:/usr/bin/docker:ro
+
+volumes:
+  docker_jenkins_home:
+    driver: local

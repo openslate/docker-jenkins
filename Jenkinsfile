@@ -10,6 +10,6 @@ node {
 openslatePipeline {
     mentions = lastAuthor
     deployEnv = 'prod'
-    publish = publishWhen
+    publish = deployWhen
     deploy = deployWhen
 }
