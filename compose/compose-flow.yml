@@ -14,7 +14,7 @@ profiles:
 rancher:
   project: Ops
   apps:
-    - name: jenkins-master
+    - name: jenkins
       namespace: jenkins
       chart: helm-jenkins
       version: 0.25.0
