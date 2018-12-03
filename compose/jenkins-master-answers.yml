@@ -1,0 +1,14 @@
+rbac.install: true
+
+Persistence.StorageClass: nfs-client
+Agent.Enabled: false
+
+Master.ServiceType: ClusterIP
+Master.HostName: ${INGRESS_HOST}
+Master.Ingress.Annotations.zalando\.org/aws-load-balancer-scheme: internal
+
+Master.InstallPlugins[0]: kubernetes:1.12.4
+Master.InstallPlugins[1]: workflow-job:2.24
+Master.InstallPlugins[2]: workflow-aggregator:2.5
+Master.InstallPlugins[3]: credentials-binding:1.16
+Master.InstallPlugins[4]: git:3.9.1

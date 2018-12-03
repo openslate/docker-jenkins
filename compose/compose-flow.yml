@@ -10,3 +10,12 @@ profiles:
   prod:
     - docker-compose.yml
     - deploy
+
+rancher:
+  project: Ops
+  apps:
+    - name: jenkins-master
+      namespace: jenkins
+      chart: helm-jenkins
+      version: 0.25.0
+      answers: ./jenkins-master-answers.yml
