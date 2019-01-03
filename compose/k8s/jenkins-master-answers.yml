@@ -9,6 +9,15 @@ Agent.Image: registry.osslabs.net/docker-jenkins-agent
 Agent.ImageTag: e3224e3-master
 Agent.CustomJenkinsLabels: [manager]
 
+{% if '${CF_ENV}' == 'staging' %}
+Master.Affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].key: spot
+Master.Affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].operator: DoesNotExist
+{% else %}
+Master.Affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].weight: 1
+Master.Affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].preference.matchExpressions[0].key: spot
+Master.Affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].preference.matchExpressions[0].operator: DoesNotExist
+{% endif %}
+
 Master.ServiceType: ClusterIP
 Master.HostName: ${INGRESS_HOST}
 Master.Ingress.Annotations.zalando\.org/aws-load-balancer-scheme: internal

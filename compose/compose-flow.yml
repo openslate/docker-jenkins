@@ -11,11 +11,19 @@ profiles:
     - docker-compose.yml
     - deploy
 
+remotes:
+  dev:
+    backend: rancher
+  staging:
+    backend: rancher
+
 rancher:
   project: Ops
   apps:
     - name: jenkins
       namespace: jenkins
       chart: helm-jenkins
-      version: 0.25.0
-      answers: ./jenkins-master-answers.yml
+      version: 0.26.0
+      answers: ./k8s/jenkins-master-answers.yml
+  manifests:
+    - ./k8s/agent-secret.yaml

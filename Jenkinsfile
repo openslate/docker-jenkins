@@ -2,6 +2,8 @@
 
 def deployWhen = { env.GIT_BRANCH == 'master' }
 
+def customDeployFunction = { cfDeployRancher() }
+
 def lastAuthor
 node {
     checkout scm
@@ -10,7 +12,7 @@ node {
 
 openslatePipeline {
     mentions = lastAuthor
-    deployEnv = 'prod'
-    publish = deployWhen
+    deployEnv = 'staging'
     deploy = deployWhen
+    deployFunction = customDeployFunction
 }
