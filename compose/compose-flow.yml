@@ -25,5 +25,7 @@ rancher:
       chart: helm-jenkins
       version: 0.26.0
       answers: ./k8s/jenkins-master-answers.yml
-  manifests:
-    - ./k8s/agent-secret.yaml
+  extras:
+    staging:
+      manifests:
+        - ./k8s/public-service.yaml
