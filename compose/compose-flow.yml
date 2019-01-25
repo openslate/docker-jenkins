@@ -12,6 +12,8 @@ profiles:
     - deploy
 
 remotes:
+  test:
+    backend: rancher
   dev:
     backend: rancher
   staging:
