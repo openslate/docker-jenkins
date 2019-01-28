@@ -3,12 +3,6 @@ rbac.install: true
 Persistence.StorageClass: default-ebs
 Persistence.Size: 20Gi
 
-Agent.Enabled: true
-Agent.ImagePullSecret: oss-registry
-Agent.Image: registry.osslabs.net/docker-jenkins-agent
-Agent.ImageTag: e3224e3-master
-Agent.CustomJenkinsLabels: [manager]
-
 {% if '${CF_ENV}' == 'staging' %}
 Master.Affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].key: spot
 Master.Affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].operator: DoesNotExist
