@@ -10,3 +10,24 @@ profiles:
   prod:
     - docker-compose.yml
     - deploy
+
+remotes:
+  test:
+    backend: rancher
+  dev:
+    backend: rancher
+  staging:
+    backend: rancher
+
+rancher:
+  project: Ops
+  apps:
+    - name: jenkins
+      namespace: jenkins
+      chart: helm-jenkins
+      version: 0.26.0
+      answers: ./k8s/jenkins-master-answers.yml
+  extras:
+    staging:
+      manifests:
+        - ./k8s/public-service.yaml
