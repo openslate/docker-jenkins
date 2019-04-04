@@ -3,7 +3,7 @@ rbac.install: true
 Persistence.StorageClass: default-ebs
 Persistence.Size: 20Gi
 
-Master.ImageTag: "2.165"
+Master.ImageTag: "2.170"
 
 {% if '${CF_ENV}' == 'staging' %}
 Master.Affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].key: spot
@@ -23,7 +23,7 @@ Master.resources.requests.memory: 3Gi
 Master.resources.limits.cpu: 2000m
 Master.resources.limits.memory: 4Gi
 
-Master.JavaOpts: -Dhudson.slaves.NodeProvisioner.initialDelay=0 -Dhudson.slaves.NodeProvisioner.MARGIN=50 -Dhudson.slaves.NodeProvisioner.MARGIN0=0.85
+Master.JavaOpts: -Dhudson.slaves.NodeProvisioner.initialDelay=0 -Dhudson.slaves.NodeProvisioner.MARGIN=50 -Dhudson.slaves.NodeProvisioner.MARGIN0=0.85 -Dorg.jenkinsci.plugins.github_branch_source.GitHubSCMSource.cacheSize=0
 
 {% set plugins -%}
 pipeline-stage-tags-metadata:1.3.4.1
