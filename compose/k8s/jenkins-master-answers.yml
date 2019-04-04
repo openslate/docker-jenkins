@@ -3,7 +3,7 @@ rbac.install: true
 Persistence.StorageClass: default-ebs
 Persistence.Size: 20Gi
 
-Master.ImageTag: "2.165"
+Master.ImageTag: "2.170"
 
 {% if '${CF_ENV}' == 'staging' %}
 Master.Affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].key: spot
