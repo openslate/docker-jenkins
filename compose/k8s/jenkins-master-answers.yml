@@ -18,7 +18,7 @@ Master.ServiceType: ClusterIP
 Master.HostName: ${INGRESS_HOST}
 Master.ingress.enabled: true
 Master.ingress.hostName: ${INGRESS_HOST}
-Master.ingress.Annotations.zalando\.org/aws-load-balancer-scheme: internal
+Master.ingress.annotations.zalando\.org/aws-load-balancer-scheme: internal
 
 Master.resources.requests.cpu: 500m
 Master.resources.requests.memory: 3Gi
