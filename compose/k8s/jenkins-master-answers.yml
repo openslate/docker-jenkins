@@ -26,6 +26,11 @@ master.resources.limits.memory: 4Gi
 
 master.javaOpts: -Dhudson.slaves.NodeProvisioner.initialDelay=0 -Dhudson.slaves.NodeProvisioner.MARGIN=50 -Dhudson.slaves.NodeProvisioner.MARGIN0=0.85 -Dorg.jenkinsci.plugins.github_branch_source.GitHubSCMSource.cacheSize=0
 
+# Backup daily at 2 am
+backup.enabled: true
+backup.schedule: 0 2 * * *
+backup.destination: s3://prod-oss-jenkins/backup/${CF_ENV}
+
 {% set plugins -%}
 ace-editor:1.1
 analysis-core:1.96
