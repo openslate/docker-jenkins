@@ -25,9 +25,10 @@ rancher:
     - name: jenkins
       namespace: jenkins
       chart: cattle-global-data:helm-jenkins
-      version: 1.3.2
+      version: 1.4.0
       answers: ./k8s/jenkins-master-answers.yml
   extras:
     staging:
       manifests:
         - ./k8s/public-service.yaml
+        - ./k8s/docker-cleanup-daemonset.yml

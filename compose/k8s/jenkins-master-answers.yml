@@ -3,7 +3,7 @@ rbac.create: true
 persistence.storageClass: default-ebs
 persistence.size: ${MASTER_VOLUME_SIZE}
 
-master.imageTag: "2.182"
+master.tag: "2.186"
 
 {% if '${CF_ENV}' == 'staging' %}
 master.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].key: spot
