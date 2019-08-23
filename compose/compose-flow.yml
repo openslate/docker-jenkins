@@ -25,7 +25,7 @@ rancher:
     - name: jenkins
       namespace: jenkins
       chart: cattle-global-data:helm-jenkins
-      version: 1.4.0
+      version: 1.5.8
       answers: ./k8s/jenkins-master-answers.yml
   extras:
     staging:
