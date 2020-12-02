@@ -23,9 +23,9 @@ master.ingress.hostName: ${INGRESS_HOST}
 master.ingress.annotations.zalando\.org/aws-load-balancer-scheme: internal
 
 master.resources.requests.cpu: 500m
-master.resources.requests.memory: 3Gi
+master.resources.requests.memory: 4Gi
 master.resources.limits.cpu: 2000m
-master.resources.limits.memory: 4Gi
+master.resources.limits.memory: 6Gi
 
 master.javaOpts: -Dhudson.slaves.NodeProvisioner.initialDelay=0 -Dhudson.slaves.NodeProvisioner.MARGIN=50 -Dhudson.slaves.NodeProvisioner.MARGIN0=0.85 -Dorg.jenkinsci.plugins.github_branch_source.GitHubSCMSource.cacheSize=0
 
