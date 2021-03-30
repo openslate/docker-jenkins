@@ -1,132 +1,137 @@
 rbac.create: true
 
-persistence.storageClass: default-ebs
+persistence.storageClass: delayed-ebs
 persistence.size: ${MASTER_VOLUME_SIZE}
 
-master.tag: "2.265"
+controller.tag: "2.265"
 
 # AWS IAM role for backup S3 upload
-master.podAnnotations.iam\.amazonaws\.com/role: JenkinsBackup
+controller.podAnnotations.iam\.amazonaws\.com/role: JenkinsBackup
 
 {% if '${CF_ENV}' == 'staging' %}
-master.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].key: spot
-master.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].operator: DoesNotExist
+controller.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].key: spot
+controller.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].operator: DoesNotExist
 {% else %}
-master.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].weight: 1
-master.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].preference.matchExpressions[0].key: spot
-master.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].preference.matchExpressions[0].operator: DoesNotExist
+controller.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].weight: 1
+controller.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].preference.matchExpressions[0].key: spot
+controller.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].preference.matchExpressions[0].operator: DoesNotExist
 {% endif %}
 
-master.serviceType: ClusterIP
-master.ingress.enabled: true
-master.ingress.hostName: ${INGRESS_HOST}
-master.ingress.annotations.zalando\.org/aws-load-balancer-scheme: internal
+controller.serviceType: ClusterIP
+controller.ingress.enabled: true
+controller.ingress.hostName: ${INGRESS_HOST}
+controller.ingress.annotations.zalando\.org/aws-load-balancer-scheme: internal
 
-master.resources.requests.cpu: 500m
-master.resources.requests.memory: 4Gi
-master.resources.limits.cpu: 2000m
-master.resources.limits.memory: 6Gi
+controller.resources.requests.cpu: 500m
+controller.resources.requests.memory: 4Gi
+# Need guaranteed ephemeral storage to create backups of $JENKINS_HOME
+controller.resources.requests.ephemeral-storage: 30Gi
+controller.resources.limits.cpu: 2000m
+controller.resources.limits.memory: 6Gi
 
-master.javaOpts: -Dhudson.slaves.NodeProvisioner.initialDelay=0 -Dhudson.slaves.NodeProvisioner.MARGIN=50 -Dhudson.slaves.NodeProvisioner.MARGIN0=0.85 -Dorg.jenkinsci.plugins.github_branch_source.GitHubSCMSource.cacheSize=0
+controller.javaOpts: -Dhudson.slaves.NodeProvisioner.initialDelay=0 -Dhudson.slaves.NodeProvisioner.MARGIN=50 -Dhudson.slaves.NodeProvisioner.MARGIN0=0.85 -Dorg.jenkinsci.plugins.github_branch_source.GitHubSCMSource.cacheSize=0
 
+controller.initializeOnce: true
+
+# See dump-plugins.groovy script for details on how to upgrade all plugins
+# and dump a list that can be copy-pasted here
 {% set plugins -%}
 ace-editor:1.1
-analysis-core:1.96
-analysis-model-api:9.3.1
-ansicolor:0.7.3
+analysis-model-api:9.8.1
+ansicolor:0.7.5
 ant:1.11
 antisamy-markup-formatter:2.1
-apache-httpcomponents-client-4-api:4.5.10-2.0
+apache-httpcomponents-client-4-api:4.5.13-1.0
 authentication-tokens:1.4
-aws-java-sdk:1.11.854
+aws-java-sdk:1.11.976
 basic-branch-build-strategies:1.3.2
-blueocean:1.24.3
+blueocean:1.24.5
 blueocean-autofavorite:1.2.4
-blueocean-bitbucket-pipeline:1.24.3
-blueocean-commons:1.24.3
-blueocean-config:1.24.3
-blueocean-core-js:1.24.3
-blueocean-dashboard:1.24.3
-blueocean-display-url:2.4.0
-blueocean-events:1.24.3
-blueocean-git-pipeline:1.24.3
-blueocean-github-pipeline:1.24.3
-blueocean-i18n:1.24.3
-blueocean-jira:1.24.3
-blueocean-jwt:1.24.3
-blueocean-personalization:1.24.3
-blueocean-pipeline-api-impl:1.24.3
-blueocean-pipeline-editor:1.24.3
-blueocean-pipeline-scm-api:1.24.3
-blueocean-rest:1.24.3
-blueocean-rest-impl:1.24.3
-blueocean-web:1.24.3
-bootstrap4-api:4.5.3-1
-bouncycastle-api:2.18
-branch-api:2.6.1
-browserstack-integration:1.1.8
+blueocean-bitbucket-pipeline:1.24.5
+blueocean-commons:1.24.5
+blueocean-config:1.24.5
+blueocean-core-js:1.24.5
+blueocean-dashboard:1.24.5
+blueocean-display-url:2.4.1
+blueocean-events:1.24.5
+blueocean-git-pipeline:1.24.5
+blueocean-github-pipeline:1.24.5
+blueocean-i18n:1.24.5
+blueocean-jira:1.24.5
+blueocean-jwt:1.24.5
+blueocean-personalization:1.24.5
+blueocean-pipeline-api-impl:1.24.5
+blueocean-pipeline-editor:1.24.5
+blueocean-pipeline-scm-api:1.24.5
+blueocean-rest:1.24.5
+blueocean-rest-impl:1.24.5
+blueocean-web:1.24.5
+bootstrap4-api:4.6.0-2
+bouncycastle-api:2.20
+branch-api:2.6.3
+browserstack-integration:1.2.3
 build-timeout:1.20
-checks-api:1.1.0
-cloudbees-bitbucket-branch-source:2.9.4
+checks-api:1.6.1
+cloudbees-bitbucket-branch-source:2.9.7
 cloudbees-disk-usage-simple:0.10
-cloudbees-folder:6.14
+cloudbees-folder:6.15
 cobertura:1.16
-code-coverage-api:1.2.0
+code-coverage-api:1.3.2
 command-launcher:1.5
 config-file-provider:3.7.0
-copyartifact:1.45.2
-credentials:2.3.13
+copyartifact:1.46
+credentials:2.3.15
 credentials-binding:1.24
-data-tables-api:1.10.21-3
-display-url-api:2.3.3
+data-tables-api:1.10.23-3
+display-url-api:2.3.4
 docker-commons:1.17
-docker-workflow:1.24
+docker-workflow:1.26
 durable-task:1.35
-echarts-api:4.9.0-2
-email-ext:2.79
-envinject:2.3.0
+echarts-api:5.0.1-1
+email-ext:2.82
+envinject:2.4.0
 envinject-api:1.7
 extended-read-permission:3.2
 external-monitor-job:1.7
 favorite:2.3.2
-font-awesome-api:5.15.1-1
-forensics-api:0.7.0
-git:4.4.5
-git-client:3.5.1
+font-awesome-api:5.15.2-2
+forensics-api:1.0.0
+git:4.7.0
+git-client:3.7.0
 git-server:1.9
-github:1.32.0
-github-api:1.116
-github-branch-source:2.9.1
+github:1.33.1
+github-api:1.123
+github-branch-source:2.9.7
 github-pr-coverage-status:2.1.1
-google-oauth-plugin:1.0.2
+google-oauth-plugin:1.0.5
 gradle:1.36
-handlebars:1.1.1
+handlebars:3.0.8
 handy-uri-templates-2-api:2.1.8-1.0
-hashicorp-vault-plugin:3.6.1
-htmlpublisher:1.23
-jackson2-api:2.11.3
+hashicorp-vault-plugin:3.7.0
+htmlpublisher:1.25
+jackson2-api:2.12.1
 javadoc:1.6
-jdk-tool:1.4
-jenkins-design-language:1.24.3
-jira:3.1.3
+jdk-tool:1.5
+jenkins-design-language:1.24.5
+jira:3.2.1
+jjwt-api:0.11.2-9.c8b45b8bb173
 jquery:1.12.4-1
 jquery-detached:1.2.1
-jquery-ui:1.0.2
-jquery3-api:3.5.1-2
+jquery3-api:3.5.1-3
 jsch:0.1.55.2
-junit:1.43
-kubernetes:1.27.5
-kubernetes-client-api:4.11.1
-kubernetes-credentials:0.7.0
-ldap:1.25
+junit:1.49
+kubernetes:1.29.2
+kubernetes-client-api:4.13.2-1
+kubernetes-credentials:0.8.0
+ldap:1.26
 lockable-resources:2.10
-mailer:1.32.1
+mailer:1.34
 mapdb-api:1.0.9.0
-matrix-auth:2.6.4
+matrix-auth:2.6.6
 matrix-project:1.18
 maven-plugin:3.8
-mercurial:2.12
-metrics:4.0.2.6
+mercurial:2.14
+metrics:4.0.2.7
 momentjs:1.1.1
 oauth-credentials:0.4
 okhttp-api:3.14.9
@@ -136,56 +141,54 @@ pipeline-github:2.7
 pipeline-github-lib:1.0
 pipeline-graph-analysis:1.10
 pipeline-input-step:2.12
-pipeline-milestone-step:1.3.1
-pipeline-model-api:1.7.2
-pipeline-model-declarative-agent:1.1.1
-pipeline-model-definition:1.7.2
-pipeline-model-extensions:1.7.2
-pipeline-rest-api:2.18
+pipeline-milestone-step:1.3.2
+pipeline-model-api:1.8.4
+pipeline-model-definition:1.8.4
+pipeline-model-extensions:1.8.4
+pipeline-rest-api:2.19
 pipeline-stage-step:2.5
-pipeline-stage-tags-metadata:1.7.2
-pipeline-stage-view:2.18
+pipeline-stage-tags-metadata:1.8.4
+pipeline-stage-view:2.19
 plain-credentials:1.7
-plugin-util-api:1.4.0
-popper-api:1.16.0-7
-prometheus:2.0.8
+plugin-util-api:2.1.0
+popper-api:1.16.1-2
+prometheus:2.0.9
 publish-over:0.22
 pubsub-light:1.13
-resource-disposer:0.14
-role-strategy:3.1
-s3:0.11.5
+resource-disposer:0.15
+role-strategy:3.1.1
+s3:0.11.6
 scm-api:2.6.4
-script-security:1.75
-slack:2.43
+script-security:1.76
+slack:2.46
 snakeyaml-api:1.27.0
 sse-gateway:1.24
-ssh-agent:1.20
+ssh-agent:1.22
 ssh-credentials:1.18.1
-ssh-slaves:1.31.2
-structs:1.20
-subversion:2.13.2
-swarm:3.24
-timestamper:1.11.8
-token-macro:2.12
-trilead-api:1.0.12
-variant:1.3
-warnings:5.0.2
-warnings-ng:8.4.4
-windows-slaves:1.6
+ssh-slaves:1.31.5
+structs:1.22
+subversion:2.14.0
+swarm:3.25
+timestamper:1.12
+token-macro:2.13
+trilead-api:1.0.13
+variant:1.4
+warnings-ng:8.10.1
+windows-slaves:1.7
 workflow-aggregator:2.6
-workflow-api:2.40
-workflow-basic-steps:2.21
-workflow-cps:2.84
-workflow-cps-global-lib:2.17
-workflow-durable-task-step:2.35
+workflow-api:2.42
+workflow-basic-steps:2.23
+workflow-cps:2.90
+workflow-cps-global-lib:2.18
+workflow-durable-task-step:2.38
 workflow-job:2.40
-workflow-multibranch:2.22
-workflow-scm-step:2.11
+workflow-multibranch:2.23
+workflow-scm-step:2.12
 workflow-step-api:2.23
-workflow-support:3.6
-ws-cleanup:0.38
+workflow-support:3.8
+ws-cleanup:0.39
 {% endset %}
 
 {% for plugin in plugins.strip().split('\n') %}
-master.installPlugins[{{ loop.index - 1 }}]: {{ plugin }}
+controller.installPlugins[{{ loop.index - 1 }}]: {{ plugin }}
 {% endfor%}
